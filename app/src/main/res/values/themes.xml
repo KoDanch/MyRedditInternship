@@ -2,4 +2,8 @@
 <resources>
 
     <style name="Theme.MyReddit" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="StyleProgressBar">
+        <item name="android:background">@drawable/config_progressbar</item>
+    </style>
 </resources>
