@@ -1,5 +1,6 @@
 package com.example.myreddit.Adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,14 @@ import com.example.myreddit.DataModel.DataModel
 import com.example.myreddit.Adapters.ViewHolder.ViewHolderPost
 import com.example.myreddit.Glide.GlideManager
 import com.example.myreddit.R
+import com.example.myreddit.RecyclerViewLoader.DifferenceTimeHelper
 
 class AdapterRecyclerView(
+    context: Context,
     private val dataSet: MutableList<DataModel>
 ) : RecyclerView.Adapter<ViewHolderPost>() {
+
+    val diffHelper = DifferenceTimeHelper(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPost {
         val view = LayoutInflater.from(parent.context)
@@ -30,6 +35,7 @@ class AdapterRecyclerView(
         holder.text_post_recyclerView.text = dataModel.text
         holder.nickname_user.text = dataModel.nickname
         holder.count_comments.text = dataModel.count_comments.toString()
+        holder.timestamp_post.text = diffHelper.getDiffHour(dataModel.timestamp_post)
         getMedia(holder, dataModel)
     }
 

@@ -16,6 +16,6 @@ class MainActivity : ComponentActivity() {
         val linearLayoutManager = LinearLayoutManager(this)
         val progressBar: ProgressBar = findViewById(R.id.progress_bar)
 
-        PostRecyclerViewLoader(posts_recyclerView, linearLayoutManager, progressBar).loadRecyclerView()
+        PostRecyclerViewLoader(this, posts_recyclerView, linearLayoutManager, progressBar).loadRecyclerView()
     }
 }

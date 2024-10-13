@@ -1,5 +1,6 @@
 package com.example.myreddit.RecyclerViewLoader
 
+import android.content.Context
 import android.view.View
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PostRecyclerViewLoader(
+    private val context: Context,
     private val recyclerView: RecyclerView,
     private val linearLayoutManager: LinearLayoutManager,
     private val progressBar: ProgressBar
@@ -25,7 +27,7 @@ class PostRecyclerViewLoader(
             val apiLoader = APIDataLoader()
             val postLoader = apiLoader.fetchTopPosts()
 
-            adapter = AdapterRecyclerView(postLoader.toMutableList())
+            adapter = AdapterRecyclerView(context, postLoader.toMutableList())
             recyclerView.layoutManager = linearLayoutManager
             recyclerView.adapter = adapter
 
