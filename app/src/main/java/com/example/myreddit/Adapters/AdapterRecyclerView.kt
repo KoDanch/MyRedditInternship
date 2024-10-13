@@ -54,6 +54,15 @@ class AdapterRecyclerView(
         }
     }
 
+    fun addPosts(newPosts: List<DataModel>) {
+        if (dataSet.size > 30) {
+            dataSet.subList(0, 10).clear()
+            notifyItemRangeRemoved(0, 10)
+        }
+        val currentList = dataSet
+        currentList.addAll(newPosts)
+    }
+
     override fun getItemCount() = dataSet.size
 
 }

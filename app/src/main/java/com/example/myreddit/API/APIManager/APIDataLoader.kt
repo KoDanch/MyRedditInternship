@@ -8,7 +8,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class APIDataLoader {
-    private  val apiLoadMedia = APILoadMedia()
+    private val apiLoadMedia = APILoadMedia()
+    private var after: String? = null
 
     suspend fun fetchTopPosts(): List<DataModel> {
         return withContext(Dispatchers.IO) {
@@ -16,17 +17,19 @@ class APIDataLoader {
                 val response = Instance.api.getTopPostReddit(
                     limit = 10,
                     intervalPost = "week",
-                    sortPost = "top"
+                    sortPost = "top",
+                    after = after
                 )
 
-               val posts = response.data.children.map { post ->
+                val posts = response.data.children.map { post ->
                     val subredditName = post.data.subreddit_name_prefixed
+                    val postId = post.data.id
                     val textPost = post.data.title
                     val countComments = post.data.num_comments
                     val timePostCreated = post.data.created_utc
 
                     DataModel(
-                        null.toString(),
+                        postId,
                         textPost,
                         null,
                         subredditName,
@@ -44,13 +47,16 @@ class APIDataLoader {
                             val fetchMedia = apiLoadMedia.getPostMedia(
                                 post.data.url_overridden_by_dest,
                                 post.data.media?.reddit_video?.scrubber_media_url,
-                                post.data.thumbnail)
+                                post.data.thumbnail
+                            )
                             withContext(Dispatchers.Main) {
                                 dataModel.imageUrl = fetchMedia
                             }
                         }
                     }
                 }
+
+                after = response.data.after
                 posts
             } catch (e: Exception) {
                 Log.e("fetchTopPosts()", "Error: ${e.message}")

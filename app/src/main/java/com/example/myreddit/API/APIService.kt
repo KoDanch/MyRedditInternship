@@ -11,7 +11,8 @@ interface APIService {
     suspend fun getTopPostReddit(
         @Query("limit") limit: Int,
         @Query("t") intervalPost: String,
-        @Query("sort") sortPost: String
+        @Query("sort") sortPost: String,
+        @Query("after") after: String?
     ): APIModel.APIModelResponse
 
     @GET("{subreddit_name}/about.json")

@@ -19,22 +19,31 @@ class PostRecyclerViewLoader(
 ) {
 
     private lateinit var adapter: AdapterRecyclerView
+    private val apiLoader = APIDataLoader()
+    val recyclerViewPagination = RecyclerViewPagination(apiLoader)
 
     fun loadRecyclerView() {
         CoroutineScope(Dispatchers.Main).launch {
             progressBar.visibility = View.VISIBLE
-
-            val apiLoader = APIDataLoader()
             val postLoader = apiLoader.fetchTopPosts()
-
             adapter = AdapterRecyclerView(context, postLoader.toMutableList())
             recyclerView.layoutManager = linearLayoutManager
             recyclerView.adapter = adapter
 
-            progressBar.visibility = View.GONE
+            val actionRecyclerViewHelper =
+                ActionRecyclerViewHelper(linearLayoutManager, { adapter.itemCount }) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        progressBar.visibility = View.VISIBLE
+                        recyclerViewPagination.getMorePost(adapter)
+                        progressBar.visibility = View.GONE
+                    }
 
+                }
+
+            recyclerView.addOnScrollListener(actionRecyclerViewHelper)
+
+            progressBar.visibility = View.GONE
 
         }
     }
-
 }
