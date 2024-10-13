@@ -11,7 +11,7 @@ import com.example.myreddit.RecyclerViewLoader.PostRecyclerViewLoader
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_mainactivity)
+        setContentView(R.layout.layout_main_activity)
         val posts_recyclerView: RecyclerView = findViewById(R.id.posts_recyclerView)
         val linearLayoutManager = LinearLayoutManager(this)
         val progressBar: ProgressBar = findViewById(R.id.progress_bar)

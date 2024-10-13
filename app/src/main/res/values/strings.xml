@@ -4,4 +4,5 @@
     <string name="timestamp_post">hours ago</string>
     <string name="text_post_recyclerView">Hello, world!</string>
     <string name="count_comments">0</string>
+    <string name="save_photo">Save Photo</string>
 </resources>

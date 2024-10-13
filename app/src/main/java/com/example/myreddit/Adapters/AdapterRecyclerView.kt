@@ -1,10 +1,12 @@
 package com.example.myreddit.Adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myreddit.Activity.FullscreenMediaActivity
 import com.example.myreddit.DataModel.DataModel
 import com.example.myreddit.Adapters.ViewHolder.ViewHolderPost
 import com.example.myreddit.Glide.GlideManager
@@ -48,6 +50,11 @@ class AdapterRecyclerView(
 
             Glide.loadAvatar(holder.avatar_user, dataModel.avatarUrl)
             Glide.loadMedia(holder.post_thumbnail, dataModel.imageUrl)
+            holder.post_thumbnail.setOnClickListener {
+                val intent = Intent(holder.itemView.context, FullscreenMediaActivity::class.java)
+                intent.putExtra("IMAGE_URL", dataModel.imageUrl)
+                holder.itemView.context.startActivity(intent)
+            }
 
         } else {
             holder.post_thumbnail.visibility = View.GONE

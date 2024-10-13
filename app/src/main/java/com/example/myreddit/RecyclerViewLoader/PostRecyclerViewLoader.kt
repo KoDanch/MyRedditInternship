@@ -20,7 +20,7 @@ class PostRecyclerViewLoader(
 
     private lateinit var adapter: AdapterRecyclerView
     private val apiLoader = APIDataLoader()
-    val recyclerViewPagination = RecyclerViewPagination(apiLoader)
+    private val recyclerViewPagination = RecyclerViewPagination(apiLoader)
 
     fun loadRecyclerView() {
         CoroutineScope(Dispatchers.Main).launch {
