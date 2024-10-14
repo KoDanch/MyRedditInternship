@@ -12,6 +12,7 @@ import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.myreddit.Glide.GlideManager
+import com.example.myreddit.Listeners.SavePhotoButtonListener
 import com.example.myreddit.R
 
 class FullscreenMediaActivity : ComponentActivity() {
@@ -21,6 +22,7 @@ class FullscreenMediaActivity : ComponentActivity() {
     private lateinit var close_imageButton: ImageButton
     private lateinit var fullscreen_imageView: ImageView
     private lateinit var save_button: Button
+    private lateinit var savePhotoButtonListener: SavePhotoButtonListener
 
     companion object {
         private const val REQUEST_CODE: Int = 8743
@@ -57,56 +59,8 @@ class FullscreenMediaActivity : ComponentActivity() {
     }
 
     private fun setActionSaveButton() {
-        save_button.setOnClickListener {
-
-            if (checkPermission()) {
-                savePhoto()
-            } else {
-                if (checkAndroidVersion()) {
-                    savePhoto()
-                } else {
-                    Toast.makeText(this, "[Rejected]: No access to the gallery", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-    }
-
-    private fun checkPermission(): Boolean {
-
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-            || (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED)
-        ) {
-
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ),
-                getRequestCode()
-            )
-            return false
-
-        }
-        return true
-    }
-
-    private fun checkAndroidVersion(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return true
-        }
-        return false
-    }
-
-    private fun savePhoto() {
-        glide.saveImage(this, imageUrl)
+        savePhotoButtonListener = SavePhotoButtonListener(this, imageUrl)
+        save_button.setOnClickListener(savePhotoButtonListener)
     }
 
 }

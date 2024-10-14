@@ -75,7 +75,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_gravity="center"
-                android:visibility="gone" />
+                android:scaleType="fitCenter"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout

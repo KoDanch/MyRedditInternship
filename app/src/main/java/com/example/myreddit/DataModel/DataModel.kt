@@ -1,7 +1,11 @@
 package com.example.myreddit.DataModel
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "posts")
 data class DataModel(
-    val id: String,
+    @PrimaryKey val id: String,
     val text: String,
     var imageUrl: String?,
     val nickname: String,

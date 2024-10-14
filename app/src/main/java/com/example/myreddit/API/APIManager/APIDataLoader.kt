@@ -3,19 +3,25 @@ package com.example.myreddit.API.APIManager
 import android.util.Log
 import com.example.myreddit.API.Instance
 import com.example.myreddit.DataModel.DataModel
+import com.example.myreddit.Database.Database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class APIDataLoader {
+class APIDataLoader(private val db: Database) {
     private val apiLoadMedia = APILoadMedia()
     private var after: String? = null
 
     suspend fun fetchTopPosts(): List<DataModel> {
+
+        if (db.databaseService().getAllPosts().isEmpty()) {
+            after = ""
+        }
+
         return withContext(Dispatchers.IO) {
             try {
                 val response = Instance.api.getTopPostReddit(
-                    limit = 10,
+                    limit = 15,
                     intervalPost = "week",
                     sortPost = "top",
                     after = after
@@ -55,8 +61,10 @@ class APIDataLoader {
                         }
                     }
                 }
-
+                db.databaseService().insertPosts(posts)
+                after = db.databaseService().getAllPosts().last().id
                 after = response.data.after
+                Log.d("aferrr", after.toString())
                 posts
             } catch (e: Exception) {
                 Log.e("fetchTopPosts()", "Error: ${e.message}")

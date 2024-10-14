@@ -6,4 +6,7 @@
     <style name="StyleProgressBar">
         <item name="android:background">@drawable/config_progressbar</item>
     </style>
+    <style name="StyleRefleshButton">
+        <item name="android:background">@drawable/config_refleshbutton</item>
+    </style>
 </resources>

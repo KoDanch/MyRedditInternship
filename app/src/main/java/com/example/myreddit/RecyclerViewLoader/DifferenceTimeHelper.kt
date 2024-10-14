@@ -5,7 +5,7 @@ import com.example.myreddit.R
 
 class DifferenceTimeHelper(private val context: Context) {
 
-    fun getDiffHour(timestamp: Long) : String {
+    fun getDiffHour(timestamp: Long): String {
         if (timestamp.toString().isNotEmpty()) {
             val currentUnixTime: Long = System.currentTimeMillis() / 1000
             val diffTime = kotlin.math.abs(currentUnixTime - timestamp) / 3600
@@ -14,7 +14,7 @@ class DifferenceTimeHelper(private val context: Context) {
 
             return diffHourText
         }
-        return ""
 
+        return ""
     }
 }

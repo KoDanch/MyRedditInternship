@@ -31,7 +31,6 @@ class GlideManager {
             .asBitmap()
             .load(imageUrl)
             .placeholder(R.drawable.nonvector_placeholder_loading_media)
-            .override(1080, 720)
             .into(imageView)
     }
 

@@ -2,6 +2,7 @@ package com.example.myreddit.Adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +10,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myreddit.Activity.FullscreenMediaActivity
 import com.example.myreddit.DataModel.DataModel
 import com.example.myreddit.Adapters.ViewHolder.ViewHolderPost
+import com.example.myreddit.Database.Database
 import com.example.myreddit.Glide.GlideManager
 import com.example.myreddit.R
 import com.example.myreddit.RecyclerViewLoader.DifferenceTimeHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AdapterRecyclerView(
     context: Context,
     private val dataSet: MutableList<DataModel>
 ) : RecyclerView.Adapter<ViewHolderPost>() {
 
-    val diffHelper = DifferenceTimeHelper(context)
+    private val diffHelper = DifferenceTimeHelper(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPost {
         val view = LayoutInflater.from(parent.context)
@@ -61,13 +67,30 @@ class AdapterRecyclerView(
         }
     }
 
-    fun addPosts(newPosts: List<DataModel>) {
+    fun addPosts(newPosts: List<DataModel>, db: Database) {
         if (dataSet.size > 30) {
-            dataSet.subList(0, 10).clear()
-            notifyItemRangeRemoved(0, 10)
+            val deletePost = dataSet.subList(0, 10).map { it.id }
+            CoroutineScope(Dispatchers.IO).launch {
+                db.databaseService().deletePostById(deletePost)
+
+                withContext(Dispatchers.Main) {
+                    dataSet.subList(0, 10).clear()
+                    notifyItemRangeRemoved(0, 10)
+                }
+            }
         }
         val currentList = dataSet
         currentList.addAll(newPosts)
+    }
+
+    fun clearPosts(db: Database) {
+        CoroutineScope(Dispatchers.IO).launch {
+            db.databaseService().clearPosts()
+            withContext(Dispatchers.Main) {
+                dataSet.clear()
+                notifyDataSetChanged()
+            }
+        }
     }
 
     override fun getItemCount() = dataSet.size

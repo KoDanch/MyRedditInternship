@@ -1,4 +1,4 @@
-package com.example.myreddit.RecyclerViewLoader
+package com.example.myreddit.Listeners
 
 import android.os.Handler
 import android.os.Looper
@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ActionRecyclerViewHelper(
+class ScroollingRecyclerViewListener(
     private val layoutManager: LinearLayoutManager,
     private val itemCount: () -> Int,
     private val loadMore: () -> Unit
